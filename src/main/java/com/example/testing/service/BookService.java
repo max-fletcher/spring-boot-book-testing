@@ -1,11 +1,9 @@
 package com.example.testing.service;
 
 import com.example.testing.entity.Book;
-
 import java.util.List;
 
 public interface BookService {
-
     List<Book> getAllBooks();
 
     Book getBook(Long id);

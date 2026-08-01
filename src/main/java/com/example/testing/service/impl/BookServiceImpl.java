@@ -1,6 +1,8 @@
 package com.example.testing.service.impl;
 
+import com.example.testing.entity.Author;
 import com.example.testing.entity.Book;
+import com.example.testing.repository.AuthorRepository;
 import com.example.testing.repository.BookRepository;
 import com.example.testing.service.BookService;
 import org.springframework.stereotype.Service;
@@ -11,9 +13,11 @@ import java.util.List;
 public class BookServiceImpl implements BookService {
 
     private final BookRepository repository;
+    private final AuthorRepository authorRepository;
 
-    public BookServiceImpl(BookRepository repository) {
+    public BookServiceImpl(BookRepository repository, AuthorRepository authorRepository) {
         this.repository = repository;
+        this.authorRepository = authorRepository;
     }
 
     @Override
@@ -23,6 +27,11 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public Book create(Book book) {
+        Long authorId = book.getAuthor().getId();
+        Author author = authorRepository.findById(authorId).orElseThrow(() -> new RuntimeException("Author not found"));
+
+        book.setAuthor(author);
+
         return repository.save(book);
     }
 
@@ -34,12 +43,13 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public Book update(Long id, Book book) {
+        Long authorId = book.getAuthor().getId();
+        Author author = authorRepository.findById(authorId).orElseThrow(() -> new RuntimeException("Author not found"));
 
-        Book existingBook = repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Book not found"));
+        Book existingBook = repository.findById(id).orElseThrow(() -> new RuntimeException("Book not found"));
 
         existingBook.setTitle(book.getTitle());
-        existingBook.setAuthor(book.getAuthor());
+        existingBook.setAuthor(author);
         existingBook.setPrice(book.getPrice());
 
         return repository.save(existingBook);
