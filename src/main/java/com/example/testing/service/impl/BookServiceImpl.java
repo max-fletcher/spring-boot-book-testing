@@ -1,5 +1,9 @@
 package com.example.testing.service.impl;
 
+import com.example.testing.dto.request.CreateBookRequest;
+import com.example.testing.dto.request.UpdateBookRequest;
+import com.example.testing.dto.response.AuthorSummaryResponse;
+import com.example.testing.dto.response.BookResponse;
 import com.example.testing.entity.Author;
 import com.example.testing.entity.Book;
 import com.example.testing.repository.AuthorRepository;
@@ -7,6 +11,7 @@ import com.example.testing.repository.BookRepository;
 import com.example.testing.service.BookService;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -21,46 +26,71 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public List<Book> getAllBooks() {
-        return repository.findAll();
+    public List<BookResponse> getAllBooks() {
+        List<Book> books = repository.findAll();
+        List<BookResponse> responses = new ArrayList<BookResponse>();
+
+        for (Book book : books) {
+            responses.add(mapToBookResponse(book)); // push to ArrayList
+        }
+
+        return responses;
     }
 
     @Override
-    public Book create(Book book) {
-        Long authorId = book.getAuthor().getId();
+    public BookResponse create(CreateBookRequest request) {
+        Long authorId = request.getAuthorId();
         Author author = authorRepository.findById(authorId).orElseThrow(() -> new RuntimeException("Author not found"));
 
+        Book book = new Book();
+        book.setTitle(request.getTitle());
+        book.setPrice(request.getPrice());
         book.setAuthor(author);
+        Book savedBook = repository.save(book);
 
-        return repository.save(book);
+        return mapToBookResponse(savedBook);
     }
 
     @Override
-    public Book getBook(Long id) {
-        return repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Book not found"));
+    public BookResponse getBook(Long id) {
+        Book book =  repository.findById(id).orElseThrow(() -> new RuntimeException("Book not found"));
+
+        return mapToBookResponse(book);
     }
 
     @Override
-    public Book update(Long id, Book book) {
-        Long authorId = book.getAuthor().getId();
+    public BookResponse update(Long id, UpdateBookRequest request) {
+        Long authorId = request.getAuthorId();
         Author author = authorRepository.findById(authorId).orElseThrow(() -> new RuntimeException("Author not found"));
-
         Book existingBook = repository.findById(id).orElseThrow(() -> new RuntimeException("Book not found"));
 
-        existingBook.setTitle(book.getTitle());
+        existingBook.setTitle(request.getTitle());
         existingBook.setAuthor(author);
-        existingBook.setPrice(book.getPrice());
+        existingBook.setPrice(request.getPrice());
+        Book updatedBook = repository.save(existingBook);
 
-        return repository.save(existingBook);
+        return mapToBookResponse(updatedBook);
     }
 
     @Override
     public void delete(Long id) {
 
-        Book existingBook = repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Book not found"));
+        Book existingBook = repository.findById(id).orElseThrow(() -> new RuntimeException("Book not found"));
 
         repository.delete(existingBook);
+    }
+
+    private BookResponse mapToBookResponse(Book book) {
+        AuthorSummaryResponse authorDto = new AuthorSummaryResponse();
+        authorDto.setId(book.getAuthor().getId());
+        authorDto.setName(book.getAuthor().getName());
+
+        BookResponse response = new BookResponse();
+        response.setId(book.getId());
+        response.setTitle(book.getTitle());
+        response.setPrice(book.getPrice());
+        response.setAuthor(authorDto);
+
+        return response;
     }
 }

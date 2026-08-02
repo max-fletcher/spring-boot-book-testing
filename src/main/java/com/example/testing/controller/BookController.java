@@ -1,6 +1,8 @@
 package com.example.testing.controller;
 
-import com.example.testing.entity.Book;
+import com.example.testing.dto.request.CreateBookRequest;
+import com.example.testing.dto.request.UpdateBookRequest;
+import com.example.testing.dto.response.BookResponse;
 import com.example.testing.service.BookService;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,25 +18,23 @@ public class BookController {
     }
 
     @GetMapping
-    public List<Book> getAllBooks() {
+    public List<BookResponse> getAllBooks() {
         return service.getAllBooks();
     }
 
     @GetMapping("/{id}")
-    public Book getBook(@PathVariable Long id) {
+    public BookResponse getBook(@PathVariable Long id) {
         return service.getBook(id);
     }
 
     @PostMapping
-    public Book createBook(@RequestBody Book book) {
-        return service.create(book);
+    public BookResponse createBook(@RequestBody CreateBookRequest request) {
+        return service.create(request);
     }
 
     @PatchMapping("/{id}")
-    public Book updateBook(@PathVariable Long id,
-                           @RequestBody Book book) {
-
-        return service.update(id, book);
+    public BookResponse updateBook(@PathVariable Long id, @RequestBody UpdateBookRequest request) {
+        return service.update(id, request);
     }
 
     @DeleteMapping("/{id}")

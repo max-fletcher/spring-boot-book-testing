@@ -1,16 +1,18 @@
 package com.example.testing.service;
 
-import com.example.testing.entity.Book;
+import com.example.testing.dto.request.CreateBookRequest;
+import com.example.testing.dto.request.UpdateBookRequest;
+import com.example.testing.dto.response.BookResponse;
 import java.util.List;
 
 public interface BookService {
-    List<Book> getAllBooks();
+    List<BookResponse> getAllBooks();
 
-    Book getBook(Long id);
+    BookResponse getBook(Long id);
 
-    Book create(Book book);
+    BookResponse create(CreateBookRequest request);
 
-    Book update(Long id, Book book);
+    BookResponse update(Long id, UpdateBookRequest request);
 
     void delete(Long id);
 }

@@ -1,20 +1,12 @@
-package com.example.testing.entity;
+package com.example.testing.dto.response;
 
-import jakarta.persistence.*;
-import java.util.ArrayList;
 import java.util.List;
 
-@Entity
-public class Author {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class AuthorResponse {
     private Long id;
     private String name;
     private String email;
-
-    @OneToMany(mappedBy = "author")
-    private List<Book> books;
+    private List<BookSummaryResponse> books;
 
     public Long getId() {
         return id;
@@ -40,11 +32,11 @@ public class Author {
         this.email = email;
     }
 
-    public List<Book> getBooks() {
+    public List<BookSummaryResponse> getBooks() {
         return books;
     }
 
-    public void setBooks(List<Book> books) {
+    public void setBooks(List<BookSummaryResponse> books) {
         this.books = books;
     }
 }

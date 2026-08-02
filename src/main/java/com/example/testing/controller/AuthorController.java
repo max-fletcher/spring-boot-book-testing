@@ -1,6 +1,8 @@
 package com.example.testing.controller;
 
-import com.example.testing.entity.Author;
+import com.example.testing.dto.request.CreateAuthorRequest;
+import com.example.testing.dto.request.UpdateAuthorRequest;
+import com.example.testing.dto.response.AuthorResponse;
 import com.example.testing.service.AuthorService;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,25 +18,25 @@ public class AuthorController {
     }
 
     @GetMapping
-    public List<Author> getAllAuthors() {
+    public List<AuthorResponse> getAllAuthors() {
         return service.getAllAuthors();
     }
 
     @GetMapping("/{id}")
-    public Author getAuthor(@PathVariable Long id) {
+    public AuthorResponse getAuthor(@PathVariable Long id) {
         return service.getAuthor(id);
     }
 
     @PostMapping
-    public Author createAuthor(@RequestBody Author author) {
-        return service.create(author);
+    public AuthorResponse createAuthor(@RequestBody CreateAuthorRequest request) {
+        return service.create(request);
     }
 
     @PatchMapping("/{id}")
-    public Author updateAuthor(@PathVariable Long id,
-                           @RequestBody Author author) {
+    public AuthorResponse updateAuthor(@PathVariable Long id,
+                           @RequestBody UpdateAuthorRequest request) {
 
-        return service.update(id, author);
+        return service.update(id, request);
     }
 
     @DeleteMapping("/{id}")

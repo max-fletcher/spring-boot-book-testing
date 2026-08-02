@@ -1,16 +1,18 @@
 package com.example.testing.service;
 
-import com.example.testing.entity.Author;
+import com.example.testing.dto.request.CreateAuthorRequest;
+import com.example.testing.dto.request.UpdateAuthorRequest;
+import com.example.testing.dto.response.AuthorResponse;
 import java.util.List;
 
 public interface AuthorService {
-    List<Author> getAllAuthors();
+    List<AuthorResponse> getAllAuthors();
 
-    Author getAuthor(Long id);
+    AuthorResponse getAuthor(Long id);
 
-    Author create(Author author);
+    AuthorResponse create(CreateAuthorRequest request);
 
-    Author update(Long id, Author author);
+    AuthorResponse update(Long id, UpdateAuthorRequest request);
 
     void delete(Long id);
 }
