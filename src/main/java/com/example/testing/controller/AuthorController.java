@@ -4,6 +4,7 @@ import com.example.testing.dto.request.CreateAuthorRequest;
 import com.example.testing.dto.request.UpdateAuthorRequest;
 import com.example.testing.dto.response.AuthorResponse;
 import com.example.testing.service.AuthorService;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,7 +17,6 @@ public class AuthorController {
     public AuthorController(AuthorService service) {
         this.service = service;
     }
-
     @GetMapping
     public List<AuthorResponse> getAllAuthors() {
         return service.getAllAuthors();
@@ -28,13 +28,13 @@ public class AuthorController {
     }
 
     @PostMapping
-    public AuthorResponse createAuthor(@RequestBody CreateAuthorRequest request) {
+    public AuthorResponse createAuthor(@Valid @RequestBody CreateAuthorRequest request) {
         return service.create(request);
     }
 
     @PatchMapping("/{id}")
     public AuthorResponse updateAuthor(@PathVariable Long id,
-                           @RequestBody UpdateAuthorRequest request) {
+                                       @Valid @RequestBody UpdateAuthorRequest request) {
 
         return service.update(id, request);
     }

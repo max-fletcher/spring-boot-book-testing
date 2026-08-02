@@ -4,6 +4,7 @@ import com.example.testing.dto.request.CreateBookRequest;
 import com.example.testing.dto.request.UpdateBookRequest;
 import com.example.testing.dto.response.BookResponse;
 import com.example.testing.service.BookService;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -28,12 +29,12 @@ public class BookController {
     }
 
     @PostMapping
-    public BookResponse createBook(@RequestBody CreateBookRequest request) {
+    public BookResponse createBook(@Valid @RequestBody CreateBookRequest request) {
         return service.create(request);
     }
 
     @PatchMapping("/{id}")
-    public BookResponse updateBook(@PathVariable Long id, @RequestBody UpdateBookRequest request) {
+    public BookResponse updateBook(@PathVariable Long id, @Valid @RequestBody UpdateBookRequest request) {
         return service.update(id, request);
     }
 
