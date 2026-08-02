@@ -7,6 +7,7 @@ import com.example.testing.dto.response.AuthorSummaryResponse;
 import com.example.testing.dto.response.BookResponse;
 import com.example.testing.entity.Author;
 import com.example.testing.entity.Book;
+import com.example.testing.mapper.AuthorMapper;
 import com.example.testing.mapper.BookMapper;
 import com.example.testing.repository.AuthorRepository;
 import com.example.testing.repository.BookRepository;
@@ -23,11 +24,13 @@ public class BookServiceImpl implements BookService {
     private final BookRepository repository;
     private final AuthorRepository authorRepository;
     private final BookMapper bookMapper;
+    private final AuthorMapper authorMapper;
 
-    public BookServiceImpl(BookRepository repository, AuthorRepository authorRepository, BookMapper bookMapper) {
+    public BookServiceImpl(BookRepository repository, AuthorRepository authorRepository, BookMapper bookMapper, AuthorMapper authorMapper) {
         this.repository = repository;
         this.authorRepository = authorRepository;
         this.bookMapper = bookMapper;
+        this.authorMapper = authorMapper;
     }
 
     @Override
@@ -49,14 +52,18 @@ public class BookServiceImpl implements BookService {
         Long authorId = request.getAuthorId();
         Author author = authorRepository.findById(authorId).orElseThrow(() -> new RuntimeException("Author not found"));
 
-        Book book = new Book();
+        // if you want to use DTO instead of mapStruct
+        /*Book book = new Book();
         book.setTitle(request.getTitle());
         book.setPrice(request.getPrice());
         book.setAuthor(author);
-        Book savedBook = repository.save(book);
+        Book savedBook = repository.save(book);*/
 
-        // if you want to use DTO instead of mapStruct
         // return mapToBookResponse(savedBook);
+
+        Book book = bookMapper.toEntity(request);
+        book.setAuthor(author);
+        Book savedBook = repository.save(book);
 
         return bookMapper.toResponse(savedBook);
     }
@@ -76,13 +83,16 @@ public class BookServiceImpl implements BookService {
         Long authorId = request.getAuthorId();
         Author author = authorRepository.findById(authorId).orElseThrow(() -> new RuntimeException("Author not found"));
         Book existingBook = repository.findById(id).orElseThrow(() -> new RuntimeException("Book not found"));
-
-        existingBook.setTitle(request.getTitle());
-        existingBook.setAuthor(author);
-        existingBook.setPrice(request.getPrice());
+        bookMapper.updateEntity(request, existingBook); // updating a book object using mapper
+        existingBook.setAuthor(author); // setting author
         Book updatedBook = repository.save(existingBook);
 
         // if you want to use DTO instead of mapStruct
+        /*existingBook.setTitle(request.getTitle());
+        existingBook.setAuthor(author);
+        existingBook.setPrice(request.getPrice());
+        Book updatedBook = repository.save(existingBook);*/
+
         // return mapToBookResponse(updatedBook);
 
         return bookMapper.toResponse(updatedBook);
@@ -90,7 +100,6 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public void delete(Long id) {
-
         Book existingBook = repository.findById(id).orElseThrow(() -> new RuntimeException("Book not found"));
 
         repository.delete(existingBook);
@@ -98,7 +107,15 @@ public class BookServiceImpl implements BookService {
 
     @Transactional
     public BookResponse createBookWithAuthor(CreateBookWithAuthorRequest request) {
-        Author author = new Author();
+        Author author = authorMapper.toEntityForCreateBookWithAuthor(request);
+        author = authorRepository.save(author);
+
+        Book book = bookMapper.toEntityForCreateBookWithAuthor(request);
+        book.setAuthor(author);
+        book = repository.save(book);
+
+        // if you want to use DTO instead of mapStruct
+        /*Author author = new Author();
         author.setName(request.getAuthorName());
         author.setEmail(request.getAuthorEmail());
         author = authorRepository.save(author);
@@ -107,9 +124,7 @@ public class BookServiceImpl implements BookService {
         book.setTitle(request.getBookTitle());
         book.setPrice(request.getPrice());
         book.setAuthor(author);
-        book = repository.save(book);
-
-        // if you want to use DTO instead of mapStruct
+        book = repository.save(book);*/
         // return mapToBookResponse(book);
 
         return bookMapper.toResponse(book);
