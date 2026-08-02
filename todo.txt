@@ -1,0 +1,4 @@
+1. Apply mapStruct for Author Create and Update
+2. Flyway
+3. Strategy and Factory using Java
+4. Continue Aspect oriented Programming(AOP)
