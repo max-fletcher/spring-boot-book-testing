@@ -13,7 +13,6 @@ import java.lang.annotation.*;
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface AuthorExists {
-
     String message() default "Author does not exist.";
 
     Class<?>[] groups() default {};

@@ -16,8 +16,7 @@ public class AuthorExistsValidator implements ConstraintValidator<AuthorExists, 
     }
 
     @Override
-    public boolean isValid(Long authorId,
-                           ConstraintValidatorContext context) {
+    public boolean isValid(Long authorId, ConstraintValidatorContext context) {
 
         if (authorId == null) {
             return true; // Let @NotNull handle null values. Useful if this field is optional i.e update endpoint

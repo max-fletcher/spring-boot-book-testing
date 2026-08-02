@@ -33,9 +33,7 @@ public class AuthorController {
     }
 
     @PatchMapping("/{id}")
-    public AuthorResponse updateAuthor(@PathVariable Long id,
-                                       @Valid @RequestBody UpdateAuthorRequest request) {
-
+    public AuthorResponse updateAuthor(@PathVariable Long id, @Valid @RequestBody UpdateAuthorRequest request) {
         return service.update(id, request);
     }
 

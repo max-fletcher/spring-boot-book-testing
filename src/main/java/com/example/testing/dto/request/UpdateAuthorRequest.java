@@ -5,10 +5,8 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
 public class UpdateAuthorRequest {
-    @NotBlank(message = "Name is required")
     @Size(max = 100, message = "Name cannot be more than 100 characters long")
     private String name;
-    @NotBlank(message = "Email is required")
     @Size(max = 100, message = "Email cannot be more than 100 characters long")
     @Email(message = "Invalid Email. Please enter valid email address.")
     private String email;
