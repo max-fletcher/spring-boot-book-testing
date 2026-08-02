@@ -6,6 +6,7 @@ import com.example.testing.dto.response.AuthorResponse;
 import com.example.testing.dto.response.BookSummaryResponse;
 import com.example.testing.entity.Author;
 import com.example.testing.entity.Book;
+import com.example.testing.mapper.AuthorMapper;
 import com.example.testing.repository.AuthorRepository;
 import com.example.testing.service.AuthorService;
 import org.springframework.stereotype.Service;
@@ -16,9 +17,12 @@ import java.util.List;
 @Service
 public class AuthorServiceImpl implements AuthorService {
     private final AuthorRepository repository;
+    private final AuthorMapper authorMapper;
 
-    public AuthorServiceImpl(AuthorRepository repository) {
+
+    public AuthorServiceImpl(AuthorRepository repository, AuthorMapper authorMapper) {
         this.repository = repository;
+        this.authorMapper = authorMapper;
     }
 
     @Override
@@ -26,11 +30,14 @@ public class AuthorServiceImpl implements AuthorService {
         List<Author> authors = repository.findAll();
         List<AuthorResponse> responses = new ArrayList<AuthorResponse>();
 
-        for (Author author : authors) {
+        // if you want to use DTO instead of mapStruct
+        /*for (Author author : authors) {
             responses.add(mapToAuthorResponse(author)); // push to ArrayList
         }
 
-        return responses;
+        return responses;*/
+
+        return authorMapper.toResponses(authors);
     }
 
     @Override
@@ -40,13 +47,19 @@ public class AuthorServiceImpl implements AuthorService {
         author.setEmail(request.getEmail());
         Author savedAuthor = repository.save(author);
 
-        return mapToAuthorResponse(savedAuthor);
+        // if you want to use DTO instead of mapStruct
+        /*return mapToAuthorResponse(savedAuthor);*/
+
+        return authorMapper.toResponse(author);
     }
 
     @Override
     public AuthorResponse getAuthor(Long id) {
         Author author = repository.findById(id).orElseThrow(() -> new RuntimeException("Author not found"));
-        return mapToAuthorResponse(author);
+        // if you want to use DTO instead of mapStruct
+        /*return mapToAuthorResponse(author);*/
+
+        return authorMapper.toResponse(author);
     }
 
     @Override
@@ -58,7 +71,10 @@ public class AuthorServiceImpl implements AuthorService {
 
         Author updatedAuthor = repository.save(existingAuthor);
 
-        return mapToAuthorResponse(updatedAuthor);
+        // if you want to use DTO instead of mapStruct
+        /*return mapToAuthorResponse(updatedAuthor);*/
+
+        return authorMapper.toResponse(updatedAuthor);
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.example.testing.controller;
 
 import com.example.testing.dto.request.CreateBookRequest;
+import com.example.testing.dto.request.CreateBookWithAuthorRequest;
 import com.example.testing.dto.request.UpdateBookRequest;
 import com.example.testing.dto.response.BookResponse;
 import com.example.testing.service.BookService;
@@ -31,6 +32,11 @@ public class BookController {
     @PostMapping
     public BookResponse createBook(@Valid @RequestBody CreateBookRequest request) {
         return service.create(request);
+    }
+
+    @PostMapping("/create-with-author")
+    public BookResponse createWithAuthor(@Valid @RequestBody CreateBookWithAuthorRequest request) {
+        return service.createBookWithAuthor(request);
     }
 
     @PatchMapping("/{id}")
