@@ -1,4 +1,22 @@
-1. Apply mapStruct for Author Create and Update
-2. Flyway
+TODO:
+1. Apply mapStruct for Author Create and Update(DONE)
+2. Flyway(PENDING)
 3. Strategy and Factory using Java
-4. Continue Aspect oriented Programming(AOP)
+4. Continue Aspect oriented Programming(AOP)(PENDING)
+
+IMPORTANT COMMANDS:
+1. ./mvnw clean package - Clear and re-install(also re-download) packages
+2. ./mvnw clean compile - Clear and re-compile project
+3. ./mvnw dependency:tree - See installed packages
+   ./mvnw dependency:tree | grep postgresql - Search installed package using grep
+4. ./mvnw flyway:info - See migration statuses as table
+5. ./mvnw flyway:migrate - Migrate
+6. ./mvnw flyway:repair - Repair and re-run migration(Repairs the flyway_schema_history table when
+                          appropriate and overwrites checksum in the process)
+7. ./mvnw flyway:validate - applied migrations haven't been modified
+                            checksums match
+                            no migrations are missing
+                            catches broken/out-of-order migrations
+8. ./mvnw flyway:baseline - Marks an existing database as being at a specific baseline version.
+                            Basically marks the current database tables, constraints etc as version 1
+                            and moves forward from there
