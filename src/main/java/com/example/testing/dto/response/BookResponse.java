@@ -1,9 +1,11 @@
 package com.example.testing.dto.response;
 
+import java.math.BigDecimal;
+
 public class BookResponse {
     private Long id;
     private String title;
-    private Double price;
+    private BigDecimal price;
     private AuthorSummaryResponse author;
 
     public Long getId() {
@@ -22,11 +24,11 @@ public class BookResponse {
         this.title = title;
     }
 
-    public Double getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
-    public void setPrice(Double price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 

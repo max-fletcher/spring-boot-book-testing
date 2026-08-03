@@ -2,6 +2,8 @@ package com.example.testing.dto.request;
 
 import jakarta.validation.constraints.*;
 
+import java.math.BigDecimal;
+
 public class CreateBookWithAuthorRequest {
     @NotBlank(message = "Author name is required")
     @Size(max = 100, message = "Author name cannot be more than 100 characters long")
@@ -19,7 +21,7 @@ public class CreateBookWithAuthorRequest {
     @NotNull(message = "Price is required")
     @Positive(message = "Price must be greater than zero")
     @Max(value = 1000, message = "Price cannot be more than 1000")
-    private Double price;
+    private BigDecimal price;
 
     public String getAuthorName() {
         return authorName;
@@ -45,11 +47,11 @@ public class CreateBookWithAuthorRequest {
         this.bookTitle = bookTitle;
     }
 
-    public Double getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
-    public void setPrice(Double price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 }

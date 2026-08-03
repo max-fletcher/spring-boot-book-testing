@@ -1,6 +1,7 @@
 package com.example.testing.entity;
 
 import jakarta.persistence.*;
+import java.math.BigDecimal;
 
 @Entity
 public class Book {
@@ -9,7 +10,7 @@ public class Book {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String title;
-    private Double price;
+    private BigDecimal price;
 
     @ManyToOne
     @JoinColumn(name = "author_id")
@@ -31,11 +32,11 @@ public class Book {
         this.title = title;
     }
 
-    public Double getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
-    public void setPrice(Double price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 
